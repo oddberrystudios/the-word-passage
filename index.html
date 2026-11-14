@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#116f80" />
+  <meta name="description" content="The Word Passage – a relaxing word transformation puzzle. Change one letter at a time and discover your own path." />
+  <title>The Word Passage</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="data/game_data.js" defer></script>
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="app" class="app">
+    <div class="scenery" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <section class="screen menu-screen" id="menuScreen" aria-label="The Word Passage menu">
+      <div class="menu-top">
+        <button class="round-icon" type="button" id="menuHelp" aria-label="How to play" title="How to play"><span class="ui-icon">?</span></button>
+        <button class="round-icon" type="button" id="menuSettings" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24"><path d="M9.7 2.8h4.6l.65 2.5 1.85.77 2.23-1.3 3.2 3.2-1.3 2.23.77 1.85 2.5.65v4.6l-2.5.65-.77 1.85 1.3 2.23-3.2 3.2-2.23-1.3-1.85.77-.65 2.5H9.7l-.65-2.5-1.85-.77-2.23 1.3-3.2-3.2 1.3-2.23-.77-1.85-2.5-.65v-4.6l2.5-.65.77-1.85-1.3-2.23 3.2-3.2 2.23 1.3 1.85-.77z" transform="translate(1.6 1.6) scale(.85)"/><circle cx="12" cy="12" r="3.5"/></svg></button>
+      </div>
+      <div class="menu-center">
+        <h1 class="logo-title" aria-label="The Word Passage"><span class="logo-topline"><span class="logo-the">THE</span> <span class="logo-word">WORD</span></span><strong class="logo-bottomline">PASSAGE</strong></h1>
+        <button id="playButton" class="primary-btn play-button" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7z"/></svg><span id="playText">PLAY</span></button>
+
+      </div>
+
+    </section>
+
+    <section class="screen game-screen hidden" id="gameScreen" aria-label="The Word Passage puzzle">
+      <header class="game-header">
+        <button class="round-icon compact" id="homeButton" type="button" aria-label="Go to main menu" title="Main menu"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5.5 10.5V21h13V10.5M9 21v-7h6v7"/></svg></button>
+        <div class="level-chip" id="levelChip">LEVEL 1</div>
+        <button class="round-icon compact" id="gameSettings" type="button" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24"><path d="M9.7 2.8h4.6l.65 2.5 1.85.77 2.23-1.3 3.2 3.2-1.3 2.23.77 1.85 2.5.65v4.6l-2.5.65-.77 1.85 1.3 2.23-3.2 3.2-2.23-1.3-1.85.77-.65 2.5H9.7l-.65-2.5-1.85-.77-2.23 1.3-3.2-3.2 1.3-2.23-.77-1.85-2.5-.65v-4.6l2.5-.65.77-1.85-1.3-2.23 3.2-3.2 2.23 1.3 1.85-.77z" transform="translate(1.6 1.6) scale(.85)"/><circle cx="12" cy="12" r="3.5"/></svg></button>
+      </header>
+      <div class="goal-bar" aria-live="polite">
+        <span class="goal-word" id="startWord">COLD</span><span class="goal-arrow">→</span><span class="goal-word goal-target" id="targetWord">WARM</span>
+      </div>
+      <div class="game-main">
+        <div class="path-area">
+          <div class="path-topline"><span class="path-label">WORD PATH</span><span class="moves-pill" id="movesPill">0 moves</span></div>
+          <div class="path-scroll" id="pathScroll" tabindex="0" aria-label="Your completed word path"><div class="path-track" id="pathTrack"></div></div>
+
+        </div>
+        <div class="controls-panel" id="controlsPanel">
+          <div class="panel-ornament" aria-hidden="true"></div>
+          <div id="targetPanelWord" class="hidden" aria-hidden="true">WARM</div>
+          <div class="word-tools"><span class="section-label current-label">CURRENT WORD</span><button type="button" id="typeModeToggle" class="type-mode-toggle" aria-label="Switch to typing the next word" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M6 9h.02M10 9h.02M14 9h.02M18 9h.02M6 12h.02M10 12h.02M14 12h.02M18 12h.02M8 15h8"/></svg><span id="typeModeLabel">TYPE</span></button></div>
+          <div class="current-tiles" id="currentTiles" role="group" aria-label="Current word; tap a tile to replace a letter or type the next word"></div>
+          <div class="feedback-line" id="feedbackLine" aria-live="polite"></div>
+          <div id="firstMoveTip" class="first-move-tip hidden" role="status"><span class="first-move-tip-icon" aria-hidden="true">✦</span><span id="firstMoveTipText">Tap a letter, then choose its replacement.</span></div>
+          <div class="hint-banner hidden" id="hintBanner" aria-live="polite"></div>
+          <div class="direct-entry hidden" id="directEntry"><input type="text" id="wordInput" enterkeyhint="done" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="Type next word" placeholder="NEXT WORD" maxlength="5"/><button type="button" id="typeSubmit" aria-label="Confirm typed word">ENTER <span>↵</span></button></div>
+          <div class="alphabet-block" id="alphabetBlock"><div class="section-label alphabet-label" aria-live="polite">TAP A WORD LETTER</div><div class="alphabet-grid" id="alphabetGrid" aria-label="Choose a replacement letter"></div></div>
+          <div class="game-actions"><button class="secondary-btn" id="undoButton" type="button"><svg viewBox="0 0 24 24"><path d="m9 7-5 5 5 5M4 12h10a6 6 0 0 1 0 12"/></svg><span>UNDO</span></button><button class="hint-btn" id="hintButton" type="button"><svg viewBox="0 0 24 24"><path d="M9 18h6m-5.5 3h5M8 14.5C6.8 13.5 6 11.8 6 10a6 6 0 1 1 12 0c0 1.8-.8 3.5-2 4.5-.8.7-1 1.4-1 2H9c0-.6-.2-1.3-1-2Z"/></svg><span>HINT</span><span class="hint-video hidden" id="hintVideo" title="Additional hint">▶</span></button></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="dialog-backdrop hidden" id="dialogBackdrop" role="presentation">
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+        <button type="button" class="dialog-close" id="dialogClose" aria-label="Close">×</button>
+        <div id="dialogContent"></div>
+      </section>
+    </div>
+    <div class="completion-backdrop hidden" id="completionBackdrop">
+      <div class="completion-card" role="dialog" aria-modal="true" aria-labelledby="completeTitle">
+        <div class="finish-emblem" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M16 32.5 27 43 49 20"/></svg></div>
+        <div class="finish-level" id="completeLevelNum">LEVEL 1</div>
+        <h2 id="completeTitle">Level Complete!</h2>
+        <div id="completeChain" class="complete-chain" aria-label="Completed word path"></div>
+        <div class="complete-moves" id="completeMoves">3 moves</div>
+        <button class="primary-btn next-btn" id="nextButton" type="button">Next Level <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="data-error hidden" id="dataError" role="alert">The puzzle data could not be loaded. Please extract the entire ZIP and reopen index.html.</div>
+  </div>
+</body>
+</html>
