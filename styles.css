@@ -1102,3 +1102,70 @@ body.wb-keyboard-open .game-screen{scroll-padding-bottom:20px}
   .wb-guide-toolnotes strong {font-size:10px;margin-bottom:1px}
   .wb-guide-toolnotes span {font-size:9px;line-height:1.18}
 }
+
+/* FINAL SCROLLBAR-FREE PRESENTATION
+   The game fills normal landscape, portrait, square and iframe layouts.
+   For exceptionally long word histories, short device keyboards and
+   Help text, native touch/trackpad navigation is retained WITHOUT a
+   visible scrollbar. Never hide overflow content that a player needs. */
+html, body, .app, .app * {
+  scrollbar-width: none !important;        /* Firefox */
+  -ms-overflow-style: none !important;    /* Legacy Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.app::-webkit-scrollbar,
+.app *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+/* Restrict the outer page to the visible game surface. The existing
+   internal long-path and small-dialog swipe behavior remains intact. */
+html, body { overflow: hidden !important; }
+
+/* Compact square screens previously stacked two full-height regions and
+   pushed the alphabet and Hint off-screen. Give each region its own column. */
+@media (min-width:380px) and (max-width:529px) and (min-aspect-ratio:0.95) and (max-aspect-ratio:1.16) and (max-height:530px) {
+  .game-screen {height:100%;min-height:0;overflow:hidden;gap:3px;padding:4px 6px 6px}
+  .game-header {height:30px;min-height:30px}
+  .game-header .round-icon.compact {width:30px;height:30px}
+  .game-header .round-icon.compact svg {width:17px;height:17px}
+  .level-chip {font-size:12px;padding:3px 12px}
+  .goal-bar {min-height:30px;padding:3px 10px;max-width:calc(100% - 40px);gap:13px}
+  .goal-word {font-size:15px}
+  .goal-arrow {font-size:16px}
+  .game-main {display:grid;grid-template-columns:minmax(0,42%) minmax(0,58%);gap:5px;align-items:stretch;justify-content:stretch;width:100%;max-width:100%;min-height:0;flex:1 1 0;margin:0 auto}
+  .path-area {height:100%;min-height:0;width:100%;align-self:stretch;justify-content:center;padding:0;transform:none}
+  .path-topline {flex:none;width:100%;max-width:100%;gap:3px;padding:3px 2px;margin:0 0 4px;border-radius:8px;background:rgba(10,92,89,.38)}
+  .path-label {font-size:9px;letter-spacing:.06em}
+  .path-topline .moves-pill {position:static!important;font-size:8px!important;padding:2px 4px;right:auto!important}
+  .path-scroll {flex:0 1 auto;height:auto;min-height:0;max-height:calc(100% - 30px);overflow-y:auto;-webkit-mask-image:none;mask-image:none}
+  .path-track {min-height:0;justify-content:flex-start;gap:2px;padding:4px 0}
+  .path-stone,.path-stone.empty {min-width:min(134px,94%);min-height:28px;padding:4px 8px;font-size:13px;border-radius:10px}
+  .path-stone.empty {min-height:25px}
+  .path-stone.goal {min-height:28px}
+  .path-connector {height:5px}
+  .controls-panel {align-self:center;width:100%;height:auto;max-height:100%;min-height:0;overflow-y:auto;padding:6px 5px 7px;gap:2px;border-width:2px;border-radius:14px;box-shadow:0 3px 0 #c1c6ad,0 8px 16px #083b4770}
+  .controls-panel:before,.panel-ornament {display:none}
+  .word-tools {min-height:18px;height:18px}
+  .current-label {font-size:9px;letter-spacing:.06em}
+  .type-mode-toggle {min-height:21px;height:21px;top:-2px;font-size:9px;padding:1px 5px}
+  .type-mode-toggle svg {width:12px;height:12px}
+  .current-tiles {gap:3px}
+  .current-tile {width:32px;height:33px;font-size:19px;border-radius:7px}
+  .feedback-line {height:6px;min-height:6px;line-height:6px;font-size:9px}
+  .first-move-tip {font-size:8px;line-height:1.1;padding:2px 3px;min-height:15px;box-shadow:none}
+  .hint-banner {position:static;font-size:9px;padding:2px 3px;line-height:1.1}
+  .alphabet-block {gap:2px;padding:3px 4px 4px;border-radius:9px}
+  .alphabet-label {font-size:8px;letter-spacing:.035em;line-height:1.1}
+  .alphabet-grid {grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+  .letter-btn:nth-child(22) {grid-column:auto}
+  .letter-btn {height:26px;min-height:26px;aspect-ratio:auto;padding:0;border-radius:5px;font-size:12px;border-bottom-width:2px}
+  .game-actions {gap:4px;min-height:27px}
+  .secondary-btn,.hint-btn {min-height:28px;height:28px;font-size:10px;padding:3px 2px;gap:3px;border-bottom-width:2px}
+  .secondary-btn svg,.hint-btn svg {width:13px;height:13px}
+  .direct-entry {gap:3px;margin:0}
+  .direct-entry input,.direct-entry button {min-height:27px;font-size:11px;padding:3px}
+}
